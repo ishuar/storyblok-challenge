@@ -1,0 +1,10 @@
+## Need to adjusted to your environment and requirements
+## This is for demo purpose only
+
+configs:
+  params:
+    server.insecure: true ## only for demo purpose - do not use in production
+
+server:
+  ingress:
+    enabled: false
