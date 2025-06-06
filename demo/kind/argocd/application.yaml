@@ -1,0 +1,31 @@
+
+# API ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pod-info-app
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: pod-info-app
+spec:
+  project: default
+  source:
+    path: demo/kind/workloads
+    repoURL: 'git@github.com:ishuar/storyblok-challenge.git'
+    targetRevision: main
+  destination:
+    namespace: pod-info
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: 5 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      backoff:
+        duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
+        factor: 2 # a factor to multiply the base duration after each failed retry
+        maxDuration: 3m # the maximum amount of time allowed for the backoff strategy
