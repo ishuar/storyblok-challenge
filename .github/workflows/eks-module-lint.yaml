@@ -1,0 +1,42 @@
+name: Lint EKS Module
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - modules/eks/**
+      - .github/workflows/eks-module-lint.yaml
+  workflow_dispatch:
+    inputs:
+      terraform_files_path:
+        required: true
+        description: Path to the module to validate
+        type: string
+        default: "modules/eks"
+      enable_terraform_docs_check:
+        required: false
+        description: Enable terraform-docs check , applicable for modules only.
+        type: boolean
+        default: true
+
+permissions:
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: eks-module-lint
+  cancel-in-progress: true
+
+jobs:
+    checkout:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+    validate-eks-module-config:
+      uses: ./.github/workflows/lint.yaml
+      needs: checkout
+      with:
+        terraform_files_path: "modules/eks"
+        enable_terraform_docs_check: true
+

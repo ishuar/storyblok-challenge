@@ -1,0 +1,93 @@
+name: Validate Terraform Changes
+on:
+  workflow_call:
+    inputs:
+      terraform_files_path:
+        required: true
+        description: Path to the terraform files to validate
+        type: string
+
+      enable_terraform_docs_check:
+        required: false
+        description: Enable terraform-docs check , applicable for modules only.
+        type: boolean
+        default: false
+
+      terraform_docs_version:
+        required: false
+        description: Version of terraform-docs to use
+        type: string
+        default: 'v0.20.0'
+
+      tflint_version:
+        required: false
+        description: Version of tflint to use
+        type: string
+        default: 'v0.52.0'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check terraform format
+        uses: dflook/terraform-fmt-check@v1
+        with:
+          path: '${{ inputs.terraform_files_path }}'
+
+      - uses: actions/cache@v4
+        name: Cache plugin dir
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - uses: terraform-linters/setup-tflint@v4
+        name: Setup TFLint
+        with:
+          tflint_version: ${{ inputs.tflint_version }}
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: tflint -f compact
+        working-directory: '${{ inputs.terraform_files_path }}'
+
+      - name: Render and check diff on Readme with Terraform Changes
+        if: always() && !cancelled() && inputs.enable_terraform_docs_check == 'true'
+        working-directory: '${{ inputs.terraform_files_path }}'
+        id: docs
+        run: |
+          curl -sSfL https://github.com/terraform-docs/terraform-docs/releases/download/${{ inputs.terraform_docs_version }}/terraform-docs-${{ inputs.terraform_docs_version }}-linux-amd64.tar.gz | tar xzf - terraform-docs
+          chmod +x terraform-docs
+          ./terraform-docs .
+          git diff --exit-code
+
+      - name: Comment on the PR if Readme is not updated.
+        if: failure() && !cancelled() && github.event_name == 'pull_request' && inputs.enable_terraform_docs_check == 'true'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          reactions: eyes
+          mode: recreate
+          comment-tag: documentation
+          message: |
+            **${{ github.workflow }} failed, Run `make docs` from the module directory to continue**
+
+      - name: Delete Comment on the PR if Readme is updated.
+        if: ${{ always() && steps.docs.conclusion == 'success' && !cancelled() && github.event_name == 'pull_request'}}
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          comment-tag: documentation
+          mode: delete
