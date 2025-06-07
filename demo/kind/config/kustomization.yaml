@@ -4,6 +4,7 @@ resources:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+## Yet another way to install helmCharts using kustomize
 # helmCharts:
 # - name: flagger
 #   releaseName: flagger

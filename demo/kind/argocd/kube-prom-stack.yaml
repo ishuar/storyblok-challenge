@@ -1,7 +1,7 @@
 
 ## Docs: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
 ##! API ref: https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
-## TO Many issues with Kube Prom Stack, used helm chart.
+##* Too Many issues with Kube Prom Stack, used helm chart.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -56,7 +56,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
-      ##! https://github.com/prometheus-community/helm-charts/issues/2196#issuecomment-1713701019
+      ##! Known issue: https://github.com/prometheus-community/helm-charts/issues/2196#issuecomment-1713701019
       - PruneLast=true
       ##! Known issue: https://github.com/argoproj/argo-cd/issues/8128
       - Replace=true # replace resources instead of patching them

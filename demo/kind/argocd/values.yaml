@@ -9,6 +9,6 @@ server:
   ingress:
     enabled: false
 
-## Save resources
+## Save resources on local cluster
 notifications:
   enabled: false
