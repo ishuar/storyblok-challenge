@@ -192,6 +192,7 @@ chmod +x setup.sh
 - Includes health checks and metrics endpoints
 - Resource limits and requests configured
 
+## Improvements
 > [!Important]
 > Improvements: @ Cloud InfraStructure
 - Consider Helm Chart for better distribution.
