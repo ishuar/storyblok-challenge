@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ------------------------------------------
 # Script: curl-loop-logger.sh
 # Description: Loops every 0.5s for N seconds, curls a URL, logs & displays output
 # Usage: ./curl-loop-logger.sh <duration_in_seconds> [url]
-# Default URL: http://podinfo.eu-01-a.internal.scayle-payments.com/
+# Default URL: http://localhost
 # ------------------------------------------
 
 set -euo pipefail
