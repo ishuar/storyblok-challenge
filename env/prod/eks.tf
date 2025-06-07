@@ -1,5 +1,5 @@
 module "webapp_eks" {
-  source = "../modules/eks"
+  source = "../../modules/eks"
 
   cluster_name                   = "storyblok-webapp-${local.environment}-${local.region}-01" ## depends on the use case and company conventions
   cluster_version                = "1.31"
