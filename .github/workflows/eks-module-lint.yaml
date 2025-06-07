@@ -39,4 +39,3 @@ jobs:
       with:
         terraform_files_path: "modules/eks"
         enable_terraform_docs_check: true
-
