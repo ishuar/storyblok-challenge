@@ -2,7 +2,6 @@
 ## Contact
 
 - 👯 [LinkedIn](https://linkedin.com/in/ishuar)
-- 💼 [Portfolio](https://ishan.learndevops.in)
 
 <p align="right"><a href="#top">Back To Top ⬆️</a></p>
 
