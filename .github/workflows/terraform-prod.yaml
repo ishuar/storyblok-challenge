@@ -1,0 +1,40 @@
+name: Terraform prod Environment
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - env/prod/*.tf
+      - .github/workflows/terraform-prod.yaml
+      - tfsec.yml
+
+permissions:
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: prod-terraform-config
+  cancel-in-progress: true
+
+jobs:
+    checkout:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+    validate-config:
+      uses: ./.github/workflows/lint.yaml
+      needs: checkout
+      with:
+        terraform_files_path: "prod"
+    terraform-plan-apply:
+      uses: ./.github/workflows/terraform-plan-apply.yaml
+      needs: [checkout, validate-config]
+      with:
+        terraform_files_path: "env/prod"
+        aws_role_to_assume: "arn:aws:iam::123456789012:role/prod-role"
+        aws_region: "us-west-2"
+        terraform-version: "1.11.0"
+        runner: "ubuntu-latest"
+        environment: "prod"
+        enable_apply_on_pr: false

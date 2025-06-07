@@ -1,0 +1,40 @@
+name: Terraform QA Environment
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - env/qa/*.tf
+      - .github/workflows/terraform-qa.yaml
+      - tfsec.yml
+
+permissions:
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: qa-terraform-config
+  cancel-in-progress: true
+
+jobs:
+    checkout:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+    validate-config:
+      uses: ./.github/workflows/lint.yaml
+      needs: checkout
+      with:
+        terraform_files_path: "qa"
+    terraform-plan-apply:
+      uses: ./.github/workflows/terraform-plan-apply.yaml
+      needs: [checkout, validate-config]
+      with:
+        terraform_files_path: "env/qa"
+        aws_role_to_assume: "arn:aws:iam::123456789012:role/qa-role"
+        aws_region: "us-west-2"
+        terraform-version: "1.11.0"
+        runner: "ubuntu-latest"
+        environment: "qa"
+        enable_apply_on_pr: true
