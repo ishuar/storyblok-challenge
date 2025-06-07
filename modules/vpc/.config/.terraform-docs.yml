@@ -6,6 +6,7 @@ output:
   mode: replace
   template: |-
     {{ .Content }}
+    {{- printf "\n" -}}
 sort:
   enabled: true
   by: required

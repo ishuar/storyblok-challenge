@@ -6,6 +6,7 @@ on:
     paths:
       - modules/vpc/**
       - .github/workflows/vpc-module-lint.yaml
+      - .github/workflows/lint.yaml
   workflow_dispatch:
     inputs:
       terraform_files_path:

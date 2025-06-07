@@ -66,7 +66,7 @@ jobs:
         working-directory: '${{ inputs.terraform_files_path }}'
 
       - name: Render and check diff on Readme with Terraform Changes
-        if: always() && !cancelled() && inputs.enable_terraform_docs_check == 'true'
+        if: always() && !cancelled() && inputs.enable_terraform_docs_check
         working-directory: '${{ inputs.terraform_files_path }}'
         id: docs
         run: |
@@ -76,12 +76,12 @@ jobs:
           git diff --exit-code
 
       - name: Comment on the PR if Readme is not updated.
-        if: failure() && !cancelled() && github.event_name == 'pull_request' && inputs.enable_terraform_docs_check == 'true'
+        if: failure() && !cancelled() && github.event_name == 'pull_request' && inputs.enable_terraform_docs_check
         uses: thollander/actions-comment-pull-request@v3
         with:
           reactions: eyes
           mode: recreate
-          comment-tag: documentation
+          comment-tag: documentation-${{ inputs.terraform_files_path }}
           message: |
             **${{ github.workflow }} failed, Run `make docs` from the module directory to continue**
 
@@ -89,5 +89,5 @@ jobs:
         if: ${{ always() && steps.docs.conclusion == 'success' && !cancelled() && github.event_name == 'pull_request'}}
         uses: thollander/actions-comment-pull-request@v3
         with:
-          comment-tag: documentation
+          comment-tag: documentation-${{ inputs.terraform_files_path }}
           mode: delete
