@@ -36,3 +36,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 this-repository.yaml
+curl_log_*.log
