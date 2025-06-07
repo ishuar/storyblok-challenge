@@ -27,7 +27,7 @@ spec:
         app: podinfo-latest
     spec:
       containers:
-      - name: podinfo-latestd
+      - name: podinfo
         image: ghcr.io/stefanprodan/podinfo:6.9.0
         imagePullPolicy: IfNotPresent
         ports:

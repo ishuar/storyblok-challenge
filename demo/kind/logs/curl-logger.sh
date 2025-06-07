@@ -10,7 +10,7 @@
 set -euo pipefail
 
 # ✅ Constants
-DEFAULT_URL="http://podinfo-latest.eu-01-a.internal.scayle-payments.com/"
+DEFAULT_URL="http://localhost"
 
 # ✅ Parse arguments
 if [ $# -lt 1 ]; then
