@@ -89,5 +89,5 @@ jobs:
         if: ${{ always() && steps.docs.conclusion == 'success' && !cancelled() && github.event_name == 'pull_request'}}
         uses: thollander/actions-comment-pull-request@v3
         with:
-          comment-tag: documentation
+          comment-tag: documentation-${{ inputs.terraform_files_path }}
           mode: delete
