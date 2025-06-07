@@ -15,7 +15,7 @@ managed within the footer file
   <p align="center">
     🌩️ Terraform Module For Provisioning AWS Virtual Private Cloud 🌩️
     <br/>
-    <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Request Feature</a></strong>
+    <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Request Feature</a></strong>
     <br/>
     <br/>
   </p>
@@ -36,7 +36,7 @@ This module is using upstream [AWS VPC Terraform module](https://github.com/terr
 module "vpc" {
   source = "PATH_TO_THIS_MODULE"
 
-  vpc_name                  = "ppro-vpc"
+  vpc_name                  = "storyblok-vpc"
   vpc_cidr                  = "10.0.0.0/16"
   vpc_secondary_cidr_blocks = ["10.1.0.0/16", "10.2.0.0/16"] ## max supports 5 entries.
 }

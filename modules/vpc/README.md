@@ -14,7 +14,7 @@ managed within the footer file
   <p align="center">
     🌩️ Terraform Module For Provisioning AWS Virtual Private Cloud 🌩️
     <br/>
-    <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Request Feature</a></strong>
+    <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Request Feature</a></strong>
     <br/>
     <br/>
   </p>
@@ -35,7 +35,7 @@ This module is using upstream [AWS VPC Terraform module](https://github.com/terr
 module "vpc" {
   source = "PATH_TO_THIS_MODULE"
 
-  vpc_name                  = "ppro-vpc"
+  vpc_name                  = "storyblok-vpc"
   vpc_cidr                  = "10.0.0.0/16"
   vpc_secondary_cidr_blocks = ["10.1.0.0/16", "10.2.0.0/16"] ## max supports 5 entries.
 }
@@ -227,17 +227,17 @@ For more details refer to [module documentation](https://github.com/terraform-aw
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-url]: https://github.com/ishuar/ppro-aws-terraform-challenge/graphs/contributors
-[contributors-shield]: https://img.shields.io/github/contributors/ishuar/ppro-aws-terraform-challenge?style=for-the-badge
+[contributors-url]: https://github.com/ishuar/storyblok-challenge/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/ishuar/storyblok-challenge?style=for-the-badge
 
-[forks-url]: https://github.com/ishuar/ppro-aws-terraform-challenge/network/members
-[forks-shield]: https://img.shields.io/github/forks/ishuar/ppro-aws-terraform-challenge?style=for-the-badge
+[forks-url]: https://github.com/ishuar/storyblok-challenge/network/members
+[forks-shield]: https://img.shields.io/github/forks/ishuar/storyblok-challenge?style=for-the-badge
 
-[stars-url]: https://github.com/ishuar/ppro-aws-terraform-challenge/stargazers
-[stars-shield]: https://img.shields.io/github/stars/ishuar/ppro-aws-terraform-challenge?style=for-the-badge
+[stars-url]: https://github.com/ishuar/storyblok-challenge/stargazers
+[stars-shield]: https://img.shields.io/github/stars/ishuar/storyblok-challenge?style=for-the-badge
 
-[issues-url]: https://github.com/ishuar/ppro-aws-terraform-challenge/issues
-[issues-shield]: https://img.shields.io/github/issues/ishuar/ppro-aws-terraform-challenge?style=for-the-badge
+[issues-url]: https://github.com/ishuar/storyblok-challenge/issues
+[issues-shield]: https://img.shields.io/github/issues/ishuar/storyblok-challenge?style=for-the-badge
 
-[license-url]: https://github.com/ishuar/ppro-aws-terraform-challenge/blob/main/LICENSE
-[license-shield]: https://img.shields.io/github/license/ishuar/ppro-aws-terraform-challenge?style=for-the-badge
+[license-url]: https://github.com/ishuar/storyblok-challenge/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/ishuar/storyblok-challenge?style=for-the-badge

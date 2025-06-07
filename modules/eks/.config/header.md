@@ -15,7 +15,7 @@ managed within the footer file
   <p align="center">
     🌩️ Terraform Module For Provisioning AWS Elastic Kubernetes Service 🌩️
     <br/>
-    <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/ppro-aws-terraform-challenge/issues"><strong>Request Feature</a></strong>
+    <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Report Bug</a></strong> or <a href="https://github.com/ishuar/storyblok-challenge/issues"><strong>Request Feature</a></strong>
     <br/>
     <br/>
   </p>
