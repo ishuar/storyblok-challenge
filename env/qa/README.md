@@ -189,8 +189,8 @@ Keep this documentation updated with:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_webapp_eks"></a> [webapp\_eks](#module\_webapp\_eks) | ../modules/eks | n/a |
-| <a name="module_webapp_eks_vpc"></a> [webapp\_eks\_vpc](#module\_webapp\_eks\_vpc) | ../modules/vpc/ | n/a |
+| <a name="module_webapp_eks"></a> [webapp\_eks](#module\_webapp\_eks) | ../../modules/eks | n/a |
+| <a name="module_webapp_eks_vpc"></a> [webapp\_eks\_vpc](#module\_webapp\_eks\_vpc) | ../../modules/vpc/ | n/a |
 
 ## Resources
 

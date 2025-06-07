@@ -1,4 +1,5 @@
 terraform {
+  ## ::Highlight:: (Best Practice to Pin min/max providers versions]
   required_version = "~> 1.11" ## S3 native locking is stable post 1.11
 
   required_providers {

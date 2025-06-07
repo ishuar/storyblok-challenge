@@ -1,5 +1,5 @@
 module "webapp_eks_vpc" {
-  source = "../modules/vpc/"
+  source = "../../modules/vpc/"
 
   vpc_name                  = "storyblok-qa-vpc-${local.region}-01" ## depends on the use case and company conventions
   vpc_cidr                  = "10.0.0.0/16"
