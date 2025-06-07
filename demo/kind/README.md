@@ -5,9 +5,10 @@ This project sets up a complete local Kubernetes development environment using K
 
 # Deployment Flow Diagram
 
+## Blue Green
+
 The following diagram illustrates the deployment workflow in our local Kubernetes environment using Kind, ArgoCD, and Flagger.
 
-- Mermaid Flow
 ```mermaid
 flowchart LR
     %% Define nodes with specific shapes and colors
@@ -29,6 +30,9 @@ flowchart LR
     classDef flagger fill:#FF8C00,stroke:#fff,color:#fff
     classDef test fill:#008B8B,stroke:#fff,color:#fff
     classDef traffic fill:#2B323F,stroke:#fff,color:#fff
+    classDef note fill:#FFF4E6,stroke:#FF8C00,color:#FF8C00,stroke-dasharray: 5 5
+    classDef success fill:#E6FFE6,stroke:#006100,color:#006100
+    classDef failure fill:#FFE6E6,stroke:#7C0000,color:#7C0000
 
     %% Layout the flow to avoid crossings
     Dev --> Kind
@@ -37,9 +41,19 @@ flowchart LR
     Kind --> Deps
     Deps --> ArgoCD
     ArgoCD --> Flagger
+
+    %% Test and deployment flow
     Flagger --> Tests
-    Tests --> Flagger
-    Flagger --> Traffic
+    Tests -->|❌ Fail| Keep[Keep Current Version]:::traffic
+    Tests -->|✅ Pass| Rollout[Rollout New Version]:::flagger
+    Keep --> Traffic
+    Rollout --> Traffic
+
+    %% Add status notes
+    noteF[No changes to production]:::note
+    noteP[Switch production traffic]:::note
+    Keep -.-> noteF
+    Rollout -.-> noteP
 
     %% Group related components
     subgraph dev[Development]
@@ -62,7 +76,6 @@ flowchart LR
 
 ```
 
-
 ## Flow Description
 
 1. **Cluster Creation**: Developer creates a local Kubernetes cluster using Kind
@@ -74,11 +87,12 @@ flowchart LR
 4. **GitOps Sync**: ArgoCD monitors and syncs configurations from GitHub
 5. **Progressive Delivery**: Flagger orchestrates the deployment:
    - Implements blue/green deployment strategy
-   - Manages traffic routing
-   - Executes smoke tests
-6. **Traffic Management**: After successful tests, Flagger gradually shifts traffic to the new version
-
-This automated pipeline ensures consistent, tested deployments with the ability to rollback if issues are detected.
+   - Runs smoke tests to verify new version:
+     - ✅ Pass: Triggers rollout of new version and switches production traffic
+     - ❌ Fail: Maintains current version with no changes to production
+6. **Traffic Management**:
+   - On success: New version becomes production traffic
+   - On failure: Current version remains unchanged
 
 ## Quick Start
 
@@ -149,7 +163,7 @@ chmod +x setup.sh
 - Self-healing capabilities
 - Web UI for deployment visualization
 > [!Note]
-> ![ArgoCD Snipper](./argocd/application-view.png)
+> ![ArgoCD Snipper](../../assets/application-view.png)
 ### Flagger (Progressive Delivery)
 - Automated canary deployments
 - Metric-based promotion/rollback
