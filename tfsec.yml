@@ -1,0 +1,13 @@
+---
+minimum_severity: HIGH
+exclude:
+  - aws-ec2-no-excessive-port-access
+  - aws-kms-auto-rotate-keys
+  - aws-s3-enable-bucket-logging
+  - aws-ec2-require-vpc-flow-logs-for-all-vpcs
+  - aws-s3-enable-versioning
+  - aws-s3-enable-bucket-encryption
+  - aws-ec2-no-public-ingress-acl
+  - aws-eks-enable-control-plane-logging
+  - aws-ec2-no-public-egress-sgr
+  - aws-s3-encryption-customer-key
