@@ -83,7 +83,7 @@ jobs:
           mode: recreate
           comment-tag: documentation-${{ inputs.terraform_files_path }}
           message: |
-            **${{ github.workflow }} failed, Run `make docs` from the module directory to continue**
+            **${{ github.workflow }} failed, Run `make docs` in the module directory `${{ inputs.terraform_files_path }}` to continue**
 
       - name: Delete Comment on the PR if Readme is updated.
         if: ${{ always() && steps.docs.conclusion == 'success' && !cancelled() && github.event_name == 'pull_request'}}
