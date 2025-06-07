@@ -65,7 +65,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  ## Security
+  ## ::Highlight:: Security
   codeScanning:
     name: IaC Scanning with tfsec Stage
     runs-on: "${{ inputs.runner }}"
@@ -104,7 +104,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ inputs.terraform-version }}
-      ## Security :: Least Privilege Principle
+      ## ::Highlight:: Security: Least Privilege Principle
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -171,7 +171,7 @@ jobs:
       - name: checkout the repository
         uses: actions/checkout@v3
 
-        ## Security :: Least Privilege Principle
+        ## ::Highlight:: Security: Least Privilege Principle
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -195,7 +195,7 @@ jobs:
           path: ${{ env.TF_PLUGIN_CACHE_DIR }}
           key: ${{ runner.os }}-${{ inputs.terraform_files_path}}-${{ hashFiles(format('{0}/{1}', inputs.terraform_files_path, inputs.cache-hash-file)) }}
 
-      ## Reliability :: Apply the plan which was reviewed
+      ## ::Highlight::  Reliability & Security: Apply the plan which was reviewed
       - name: "Terraform Apply"
         shell: bash
         working-directory: "${{ github.workspace }}/${{ inputs.terraform_files_path}}"

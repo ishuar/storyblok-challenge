@@ -10,11 +10,11 @@ module "eks" {
   cluster_version = var.cluster_version
 
   ## EKS Networking
-  cluster_endpoint_private_access       = true ## Security
+  cluster_endpoint_private_access       = true ## ::Highlight:: Security
   cluster_endpoint_public_access        = var.cluster_endpoint_public_access
   vpc_id                                = var.vpc_id
-  subnet_ids                            = var.subnet_ids               ## Security, Resiliency and Availability
-  control_plane_subnet_ids              = var.control_plane_subnet_ids ## Security, Resiliency and Availability
+  subnet_ids                            = var.subnet_ids               ## ::Highlight:: Security, Resiliency and Availability
+  control_plane_subnet_ids              = var.control_plane_subnet_ids ## ::Highlight:: Security, Resiliency and Availability
   cluster_ip_family                     = var.cluster_ip_family
   cluster_service_ipv4_cidr             = var.cluster_service_ipv4_cidr
   cluster_endpoint_public_access_cidrs  = var.cluster_endpoint_public_access_cidrs
@@ -36,7 +36,7 @@ module "eks" {
   iam_role_use_name_prefix                 = false
 
   ## Audit Logging
-  cluster_enabled_log_types = var.cluster_enabled_log_types ## Security
+  cluster_enabled_log_types = var.cluster_enabled_log_types ## ::Highlight:: Security & Audit
 
   ## Extras
   tags           = var.tags
