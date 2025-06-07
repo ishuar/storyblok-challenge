@@ -1,5 +1,5 @@
-
-# API ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
+## Docs: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
+##! API ref: https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

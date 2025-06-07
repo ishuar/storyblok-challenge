@@ -8,3 +8,7 @@ configs:
 server:
   ingress:
     enabled: false
+
+## Save resources
+notifications:
+  enabled: false

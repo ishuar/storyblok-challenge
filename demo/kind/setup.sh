@@ -132,24 +132,25 @@ install_flagger() {
     log "Installing Flagger..."
     helm repo add flagger https://flagger.app
     helm repo update
+    local namespace="flagger"
 
     helm upgrade --install flagger flagger/flagger \
-        --namespace flagger \
-        --set prometheus.install=true \
+        --namespace $namespace \
+        --set metricsServer=http://kube-prom-stack-kube-prome-prometheus.kube-prom-stack.svc:9090 \
         --set meshProvider=kubernetes \
         --version 1.41.0 \
         --create-namespace
 
-    wait_for_pods "flagger" "app.kubernetes.io/name=flagger"
+    wait_for_pods "$namespace" "app.kubernetes.io/name=flagger"
 
     log "Installing Flagger load tester..."
-    export NAMESPACE=pod-info
+    local namespace=pod-info
     helm upgrade -i flagger-loadtester flagger/loadtester \
-        --namespace="$NAMESPACE" \
+        --namespace="$namespace" \
         --version 0.35.0 \
         --create-namespace
 
-    wait_for_pods "$NAMESPACE" "app.kubernetes.io/name=loadtester"
+    wait_for_pods "$namespace" "app.kubernetes.io/name=loadtester"
 }
 
 # Install ArgoCD
@@ -157,18 +158,33 @@ install_argocd() {
     log "Installing ArgoCD..."
     helm repo add argo https://argoproj.github.io/argo-helm
     helm repo update
-
+    local namespace="argocd"
     helm upgrade -i argocd argo/argo-cd \
-        --namespace=argocd \
+        --namespace=$namespace \
         --version=8.0.14 \
         --values "${SCRIPT_DIR}/argocd/values.yaml" \
         --create-namespace
 
-    wait_for_pods "argocd" "app.kubernetes.io/instance=argocd"
+    wait_for_pods "$namespace" "app.kubernetes.io/instance=argocd"
 
     log "Applying repository secret..."
     log "Only Possible on the local machine of ::ishuar::"
     kubectl apply -f "${SCRIPT_DIR}/argocd/this-repository.yaml"
+}
+
+# Install Kube-Prom-Stack application
+install_kube_prom_stack() {
+    log "Installing Kubernetes Prometheus Stack..."
+    helm repo add kube-prometheus-stack https://prometheus-community.github.io/helm-charts
+    helm repo update
+    local namespace="kube-prom-stack"
+    helm upgrade -i kube-prom-stack kube-prometheus-stack/kube-prometheus-stack \
+        --namespace $namespace \
+        --version 73.2.0 \
+        --create-namespace
+    wait_for_pods "$namespace" "app.kubernetes.io/name=prometheus"
+    local prometheus_service="$(kubectl get svc kube-prom-stack-kube-prome-prometheus -n $namespace -o jsonpath='{.metadata.name}{"."}{.metadata.namespace}{".svc.cluster.local"}')"
+    log "Prometheus is available at: $prometheus_service"
 }
 
 # Install PodInfo application
@@ -185,6 +201,7 @@ main() {
     check_dependencies
     setup_kind_cluster
     install_nginx_ingress
+    install_kube_prom_stack
     install_flagger
     install_argocd
     install_podinfo

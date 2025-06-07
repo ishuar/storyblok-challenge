@@ -1,0 +1,68 @@
+
+## Docs: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications
+##! API ref: https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
+## TO Many issues with Kube Prom Stack, used helm chart.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prom-stack
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: kube-prom-stack
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: kube-prometheus-stack
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    targetRevision: 73.2.0 # version of the chart to use
+    helm:
+      releaseName: kube-prom-stack
+      ## for valueFiles to work, git path is required.
+      # valueFiles:
+      # - kube-prom-stack-values.yaml # values file to use for the chart
+      ##! https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      values: |
+        prometheusOperator:
+          enabled: true
+          admissionWebhooks:
+            enabled: true
+
+            annotations:
+              argocd.argoproj.io/hook: PreSync
+              argocd.argoproj.io/hook-delete-policy: HookSucceeded
+
+            patch:
+              annotations:
+                argocd.argoproj.io/hook: PreSync
+                argocd.argoproj.io/hook-delete-policy: HookSucceeded
+
+            mutatingWebhookConfiguration:
+              annotations:
+                argocd.argoproj.io/hook: PreSync
+
+            validatingWebhookConfiguration:
+              annotations:
+                argocd.argoproj.io/hook: PreSync
+
+  destination:
+    namespace: kube-prom-stack
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      ##! https://github.com/prometheus-community/helm-charts/issues/2196#issuecomment-1713701019
+      - PruneLast=true
+      ##! Known issue: https://github.com/argoproj/argo-cd/issues/8128
+      - Replace=true # replace resources instead of patching them
+    retry:
+      limit: 5 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      backoff:
+        duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
+        factor: 2 # a factor to multiply the base duration after each failed retry
+        maxDuration: 3m # the maximum amount of time allowed for the backoff strategy
