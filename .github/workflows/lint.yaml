@@ -81,7 +81,7 @@ jobs:
         with:
           reactions: eyes
           mode: recreate
-          comment-tag: documentation
+          comment-tag: documentation-${{ inputs.terraform_files_path }}
           message: |
             **${{ github.workflow }} failed, Run `make docs` from the module directory to continue**
 
