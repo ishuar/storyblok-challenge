@@ -27,7 +27,6 @@ debug() { echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')] DEBUG: $1${NC}"; }
 error_handler() {
     local exit_code=$1
     local line_no=$2
-    local bash_lineno=$3
     local last_command=$4
     local error_trace=$5
 
@@ -79,12 +78,15 @@ wait_for_pods() {
     local namespace=$1
     local label_selector=${2:-""} # Optional label selector
     local timeout=${3:-300} # Default timeout of 5 minutes
-    local start_time=$(date +%s)
+    ## https://www.shellcheck.net/wiki/SC2155
+    local start_time
+    start_time=$(date +%s)
 
     log "Waiting for pods in namespace '$namespace' to be ready..."
 
     while true; do
-        local current_time=$(date +%s)
+        local current_time
+        current_time=$(date +%s)
         local elapsed_time=$((current_time - start_time))
 
         if [[ $elapsed_time -gt $timeout ]]; then
@@ -183,7 +185,10 @@ install_kube_prom_stack() {
         --version 73.2.0 \
         --create-namespace
     wait_for_pods "$namespace" "app.kubernetes.io/name=prometheus"
-    local prometheus_service="$(kubectl get svc kube-prom-stack-kube-prome-prometheus -n $namespace -o jsonpath='{.metadata.name}{"."}{.metadata.namespace}{".svc.cluster.local"}')"
+
+    ## https://www.shellcheck.net/wiki/SC2155
+    local prometheus_service
+    prometheus_service="$(kubectl get svc kube-prom-stack-kube-prome-prometheus -n $namespace -o jsonpath='{.metadata.name}{"."}{.metadata.namespace}{".svc.cluster.local"}')"
     log "Prometheus is available at: $prometheus_service"
 }
 
