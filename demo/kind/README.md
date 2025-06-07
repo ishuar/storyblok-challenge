@@ -135,16 +135,23 @@ chmod +x setup.sh
 ## Features
 
 - **Local Kubernetes Cluster**: Kind-based cluster.
+
 - **Ingress Controller**: Nginx ingress for local domain routing
+
 - **Progressive Delivery**:
   - Flagger for automated canary deployments
   - Support for both Canary and Blue/Green deployment strategies
+
 - **GitOps**:
   - ArgoCD for declarative deployments
   - Automated sync and self-healing capabilities
-- **Monitoring**:
-  - Prometheus integration via Flagger
-  - Built-in metrics collection
+
+- **Monitoring & Observability**:
+  - Monitor Cluster Health with `Kube-prom-stack`
+  - Observe Kubernetes Resource State
+  - Visualize Data with Grafana Dashboards
+  - Drive Progressive Delivery with Flagger
+
 - **Load Testing**: Integrated load testing capabilities with Flagger's load tester
 
 ## Component Details
@@ -164,11 +171,20 @@ chmod +x setup.sh
 - Web UI for deployment visualization
 > [!Note]
 > ![ArgoCD Snipper](../../assets/application-view.png)
+
 ### Flagger (Progressive Delivery)
 - Automated canary deployments
 - Metric-based promotion/rollback
 - Traffic shifting
 - Load testing integration
+
+### Kube-prom-stack (Monitoring & Observability)
+- `Alertmanager`: Handles alerts sent by Prometheus; deduplicates, groups, routes, and sends notifications (email, Slack, etc.)
+- `Grafana`: Web UI for visualizing metrics collected by Prometheus and other data sources.
+- `PromOperator`: Reconciles CRDs like `ServiceMonitor`, `PodMonitor`,  manages Prometheus lifecycle.
+- `kube-state-metrics`: Exposes Kubernetes object metrics (e.g., deployments, pods, nodes) in Prometheus format
+- `node-exporter`: Collects host-level metrics like CPU, memory, disk from each node
+- `prometheus`: The Prometheus server: scrapes metrics, stores time series, evaluates rules
 
 ### Demo Application (PodInfo)
 - Sample application for testing deployments
@@ -182,9 +198,13 @@ chmod +x setup.sh
 - Configure Topology Constraints
 - IRSA if required
 - Configure Pod Disruption Budget
-- Appropriate Toleration or NodeSeclectors.
+- Appropriate Toleration or NodeSelectors.
+- Fine tune and optimize components
+- Add persistence to cluster data.
 
 ## Reference Documentation
 - [Kind Documentation](https://kind.sigs.k8s.io/docs/)
 - [Flagger Documentation](https://docs.flagger.app/)
 - [ArgoCD Documentation](https://argo-cd.readthedocs.io/)
+- [Prometheus Documentation](https://prometheus.io/docs/introduction/overview/)
+- [Kube-prom-stack By SysEleven](https://docs.syseleven.de/metakube-accelerator/building-blocks/observability-monitoring/kube-prometheus-stack)
