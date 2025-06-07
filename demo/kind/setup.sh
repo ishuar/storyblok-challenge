@@ -129,7 +129,7 @@ install_nginx_ingress() {
 
 # Install Flagger and its components
 install_flagger() {
-    log "Installing Flagger..."y
+    log "Installing Flagger..."
     helm repo add flagger https://flagger.app
     helm repo update
 
